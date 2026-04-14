@@ -1,3 +1,4 @@
+import java.security.KeyStore.Entry;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -69,5 +70,50 @@ public class Traverse {
     v45.neighbors = new ArrayList<>(List.of(v23));
     v23.neighbors = new ArrayList<>(List.of());
     v67.neighbors = new ArrayList<>(List.of(v91));
+
+    // printGossipers(grace);
+    System.out.println(reachable(graph, 3 , 91));
+  }
+
+
+  public static void printGossipers(Person current) {
+    Set<Person> seen = new HashSet<>();
+    printGossipers(current, seen);
+  }
+
+  private static void printGossipers(Person current, Set<Person> seen){
+    if(seen.contains(current)) return;
+    
+
+    seen.add(current);
+
+    System.out.println(current.getName());
+
+    for (Person person : current.getConfidants()) {
+        printGossipers(person, seen);
+    }
+
+  }
+
+  public static boolean reachable(Map<Integer, Set<Integer>> graph, int start, int end){
+
+    return reachable(graph, start, end, new HashSet<>());
+  }
+
+  private static boolean reachable(Map<Integer, Set<Integer>> graph, int start, int end, Set<Integer> set){
+    if(start == end) return true;
+
+    if(set.contains(start)) return false;
+
+    set.add(start);
+
+    for(int neighbor : graph.get(start) ){
+      if(reachable(graph, neighbor, end, set)){
+        return true;
+      };
+    };
+
+
+    return false;
   }
 }
